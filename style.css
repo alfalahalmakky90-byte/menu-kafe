@@ -1,0 +1,83 @@
+/* Tab Navigasi Metode Pembayaran */
+.payment-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #2c3e50;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Styling Khusus PayLater Box */
+.paylater-box {
+    background: #eff6ff;
+    border: 2px dashed #93c5fd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.paylater-title {
+    font-size: 0.85rem;
+    color: #1e40af;
+}
+
+.paylater-amount {
+    font-size: 1.4rem;
+    color: #1d4ed8;
+    margin: 4px 0;
+}
+
+.paylater-info {
+    font-size: 0.78rem;
+    color: #3b82f6;
+    margin-bottom: 12px;
+}
+
+.paylater-form label {
+    display: block;
+    font-size: 0.8rem;
+    color: #1e293b;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.paylater-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.paylater-form input:focus {
+    border-color: #3b82f6;
+}
+
+.paylater-btn {
+    background: #2563eb;
+}
+
+.paylater-btn:hover {
+    background: #1d4ed8;
+}
