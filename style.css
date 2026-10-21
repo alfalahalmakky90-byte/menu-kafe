@@ -1,424 +1,394 @@
-/* ==========================================
-   1. RESET & PALET WARNA NUSANTARA
-   ========================================== */
+/* ============================================================
+   MuisMwon Digital Menu - Style Kekinian & Aesthetic
+   ============================================================ */
+
 :root {
-    --bg-main: #fcf9f2;          /* Warna Krem Beras / Vintage Paper */
-    --primary-dark: #3d2314;     /* Cokelat Kayu Jati Tua / Batik */
-    --accent-red: #a83226;       /* Merah Bata / Cabai */
-    --accent-gold: #d97706;      /* Emas Kunyit / Rempah */
-    --accent-green: #2d6a4f;     /* Hijau Daun Pisang */
-    --text-dark: #2b1e16;        /* Hitam Cokelat Warm */
-    --text-muted: #786454;       /* Cokelat Rempah Soft */
-    --card-bg: #ffffff;
-    --border-color: #e6dfd3;
+    --bg-dark: #121212;
+    --card-bg: #1e1e1e;
+    --accent: #e6a15c;          /* Warna Warm Gold/Amber khas kafe */
+    --accent-hover: #d48f4a;
+    --text-primary: #f4f1ea;    /* Warna Krem Hangat */
+    --text-muted: #a0a0a0;
+    --radius: 16px;
+    --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* Reset dasar */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-main);
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background-color: var(--bg-main);
-    color: var(--text-dark);
-    padding-bottom: 95px; /* Ruang agar tidak tertutup floating cart bar */
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    padding-bottom: 110px; /* Ruang di bawah agar tidak tertutup keranjang melayang */
 }
 
-/* ==========================================
-   2. HEADER & BANNER TRADISIONAL
-   ========================================== */
-header {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, #26140a 100%);
-    color: #fefae0;
-    text-align: center;
-    padding: 28px 16px;
-    box-shadow: 0 4px 12px rgba(61, 35, 20, 0.25);
-    border-bottom: 3px solid var(--accent-gold);
+/* ============================================================
+   1. HERO HEADER
+   ============================================================ */
+.hero {
     position: relative;
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(18,18,18,1)), 
+                url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1000') center/cover no-repeat;
+    padding: 45px 20px 30px;
+    text-align: center;
 }
 
-header h1 {
-    font-size: 1.6rem;
-    margin-bottom: 6px;
+.badge {
+    display: inline-block;
+    background: rgba(230, 161, 92, 0.18);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #fef3c7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(230, 161, 92, 0.3);
 }
 
-header p {
-    font-size: 0.85rem;
-    color: #e2d1c3;
+.hero h1 {
+    font-size: 38px;
+    font-weight: 800;
+    margin: 12px 0 6px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
 }
 
-/* ==========================================
-   3. KATEGORI MENU (SCROLL HORIZONTAL)
-   ========================================== */
-.category-container {
+.hero p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ============================================================
+   2. TAB NAVIGASI KATEGORI (Sticky Header)
+   ============================================================ */
+.category-nav {
     display: flex;
     gap: 10px;
-    padding: 14px 16px;
     overflow-x: auto;
-    background: var(--card-bg);
-    box-shadow: 0 2px 6px rgba(61, 35, 20, 0.06);
+    padding: 15px 20px;
     position: sticky;
     top: 0;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
     z-index: 10;
-    border-bottom: 1px solid var(--border-color);
+    scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
 }
 
-.category-container::-webkit-scrollbar {
-    display: none;
+.category-nav::-webkit-scrollbar {
+    display: none; /* Sembunyikan scrollbar di Chrome/Safari */
 }
 
 .cat-btn {
-    padding: 8px 18px;
-    border: 1px solid var(--border-color);
-    background: #f5efe6;
+    background: #262626;
     color: var(--text-muted);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.85rem;
+    border: 1px solid #333;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
+    cursor: pointer;
     transition: all 0.25s ease;
 }
 
 .cat-btn.active, .cat-btn:hover {
-    background: var(--accent-red);
-    color: #ffffff;
-    border-color: var(--accent-red);
-    box-shadow: 0 2px 6px rgba(168, 50, 38, 0.3);
+    background: var(--accent);
+    color: #121212;
+    border-color: var(--accent);
+    font-weight: 700;
 }
 
-/* ==========================================
-   4. GRID & KARTU MENU NUSANTARA
-   ========================================== */
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-    padding: 18px;
+/* ============================================================
+   3. CONTAINER & GRID MENU
+   ============================================================ */
+.container {
+    padding: 0 20px;
     max-width: 800px;
     margin: 0 auto;
 }
 
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 28px 0 16px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+/* ============================================================
+   4. KARTU MENU (CARD UI)
+   ============================================================ */
 .menu-card {
     background: var(--card-bg);
-    border-radius: 14px;
+    border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(61, 35, 20, 0.08);
-    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .menu-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(61, 35, 20, 0.12);
+    border-color: rgba(230, 161, 92, 0.4);
 }
 
-.menu-card img {
+.menu-card:active {
+    transform: scale(0.97);
+}
+
+.img-wrapper {
     width: 100%;
-    height: 165px;
+    height: 130px;
+    overflow: hidden;
+    position: relative;
+}
+
+.img-wrapper img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.menu-card:hover .img-wrapper img {
+    transform: scale(1.08);
 }
 
 .menu-info {
-    padding: 16px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1;
+    justify-content: space-between;
 }
 
 .menu-info h3 {
-    font-size: 1.15rem;
-    color: var(--primary-dark);
-    margin-bottom: 6px;
+    font-size: 14px;
     font-weight: 700;
+    margin-bottom: 5px;
+    color: #ffffff;
+    line-height: 1.3;
 }
 
-.menu-info .desc {
-    font-size: 0.83rem;
+.desc {
+    font-size: 11px;
     color: var(--text-muted);
-    margin-bottom: 14px;
-    flex-grow: 1;
-    line-height: 1.45;
-}
-
-.menu-info .price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent-gold);
+    line-height: 1.4;
     margin-bottom: 12px;
 }
 
-.menu-info button {
-    background: var(--accent-green);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.88rem;
-    transition: background 0.2s ease;
-    box-shadow: 0 2px 4px rgba(45, 106, 79, 0.2);
-}
-
-.menu-info button:hover {
-    background: #23533e;
-}
-
-/* ==========================================
-   5. FLOATING CART BAR (RINGKASAN PESANAN)
-   ========================================== */
-.cart-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: var(--card-bg);
-    box-shadow: 0 -4px 16px rgba(61, 35, 20, 0.12);
+.card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-top: 2px solid var(--accent-gold);
-    z-index: 90;
+    margin-top: auto;
 }
 
-.cart-bar div {
-    font-size: 0.9rem;
-    color: var(--text-dark);
+.price {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent);
 }
 
-.cart-bar strong {
-    color: var(--accent-green);
-    font-size: 1.05rem;
-}
-
-.cart-bar button {
-    background: var(--accent-red);
-    color: white;
+.btn-add {
+    background: var(--accent);
+    color: #121212;
     border: none;
-    padding: 11px 20px;
+    padding: 7px 12px;
     border-radius: 8px;
+    font-size: 11px;
     font-weight: 700;
-    font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.2s ease;
-    box-shadow: 0 3px 8px rgba(168, 50, 38, 0.3);
 }
 
-.cart-bar button:hover {
-    background: #8b281e;
+.btn-add:hover {
+    background: var(--accent-hover);
 }
 
-/* ==========================================
-   6. MODAL OVERLAY & POPUP PEMBAYARAN
-   ========================================== */
-.modal-overlay {
+/* ============================================================
+   5. FLOATING CART BAR (KERANJANG MELAYANG)
+   ============================================================ */
+.floating-cart {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--accent);
+    color: #121212;
+    padding: 12px 20px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(230, 161, 92, 0.35);
+    cursor: pointer;
+    z-index: 99;
+    transition: transform 0.2s ease;
+}
+
+.floating-cart:active {
+    transform: scale(0.98);
+}
+
+.cart-info {
+    display: flex;
+    align-items: center;
+}
+
+.cart-count {
+    font-size: 12px;
+    font-weight: 700;
+    background: #121212;
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.cart-total-price {
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.btn-view-cart {
+    background: transparent;
+    border: none;
+    font-weight: 800;
+    font-size: 13px;
+    color: #121212;
+}
+
+/* ============================================================
+   6. MODAL POPUP KERANJANG
+   ============================================================ */
+.cart-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(38, 20, 10, 0.7);
-    display: flex;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    display: none;
     justify-content: center;
-    align-items: center;
-    padding: 16px;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    align-items: flex-end;
+    z-index: 100;
 }
 
-.modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
+.cart-modal-overlay.active {
+    display: flex;
 }
 
-.modal-card {
-    background: var(--card-bg);
+.cart-modal-content {
+    background: #1e1e1e;
     width: 100%;
-    max-width: 380px;
-    border-radius: 18px;
-    padding: 24px 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--border-color);
+    max-width: 600px;
+    border-radius: 24px 24px 0 0;
+    padding: 24px;
+    border-top: 1px solid #333;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
 }
 
 .close-btn {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
+    background: #2a2a2a;
     border: none;
-    font-size: 1.6rem;
     color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 14px;
     cursor: pointer;
 }
 
-.modal-card h2 {
-    font-size: 1.3rem;
-    color: var(--primary-dark);
-    margin-bottom: 4px;
+.modal-body ul {
+    list-style: none;
+    max-height: 240px;
+    overflow-y: auto;
 }
 
-.modal-subtitle {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-}
-
-/* ==========================================
-   7. TAB PEMBAYARAN (QRIS & PAYLATER)
-   ========================================== */
-.payment-tabs {
+.cart-item-row {
     display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    background: #f5efe6;
-    padding: 5px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 14px;
+    color: var(--text-primary);
 }
 
-.tab-btn {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    background: transparent;
-    font-weight: 600;
+.empty-msg {
+    text-align: center;
     color: var(--text-muted);
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
+    padding: 25px 0;
+    font-size: 14px;
 }
 
-.tab-btn.active {
-    background: var(--card-bg);
-    color: var(--primary-dark);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-}
-
-/* Tampilan Konten QRIS */
-.qris-box {
-    background: #fcfaf7;
-    border: 2px dashed #d1c4b2;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-}
-
-.qris-box img {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-}
-
-.qris-merchant {
-    font-size: 0.9rem;
-    margin-top: 8px;
-    color: var(--primary-dark);
-}
-
-.qris-amount {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--accent-green);
-    margin-top: 4px;
-}
-
-/* Tampilan Konten PayLater */
-.paylater-box {
-    background: #fffbeb;
-    border: 2px dashed #fcd34d;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-.paylater-title {
-    font-size: 0.8rem;
-    color: #92400e;
-}
-
-.paylater-amount {
-    font-size: 1.35rem;
-    color: #b45309;
-    margin: 4px 0;
-    font-weight: 700;
-}
-
-.paylater-info {
-    font-size: 0.78rem;
-    color: #d97706;
-    margin-bottom: 12px;
-}
-
-.paylater-form label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--primary-dark);
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-.paylater-form input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    outline: none;
-}
-
-.paylater-form input:focus {
-    border-color: var(--accent-gold);
-}
-
-/* Instruksi & Tombol Aksi Modal */
-.instructions {
-    font-size: 0.75rem;
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 16px;
+    font-size: 15px;
     color: var(--text-muted);
-    margin-bottom: 16px;
-    line-height: 1.35;
 }
 
-.confirm-pay-btn {
+.highlight {
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.checkout-btn {
     width: 100%;
-    background: var(--accent-green);
+    background: #28a745;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 15px;
     cursor: pointer;
     transition: background 0.2s ease;
-    box-shadow: 0 3px 6px rgba(45, 106, 79, 0.25);
 }
 
-.confirm-pay-btn:hover {
-    background: #23533e;
-}
-
-.paylater-btn {
-    background: var(--accent-red);
-    box-shadow: 0 3px 6px rgba(168, 50, 38, 0.25);
-}
-
-.paylater-btn:hover {
-    background: #8b281e;
+.checkout-btn:hover {
+    background: #218838;
 }
