@@ -1,0 +1,42 @@
+<!-- Modal Pembayaran (QRIS & PayLater) -->
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal-card">
+        <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+        <h2>Metode Pembayaran</h2>
+        <p class="modal-subtitle">Pilih cara pembayaran yang kamu inginkan</p>
+
+        <!-- Pilihan Tab Metode Pembayaran -->
+        <div class="payment-tabs">
+            <button class="tab-btn active" onclick="switchPayment('qris')">QRIS</button>
+            <button class="tab-btn" onclick="switchPayment('paylater')">PayLater</button>
+        </div>
+
+        <!-- Tampilan Konten QRIS -->
+        <div id="qrisContent" class="payment-method-content">
+            <div class="qris-box">
+                <img id="qrisImage" src="" alt="Kode QRIS">
+                <p class="qris-merchant"><strong>Kopi Kenangan Senja</strong></p>
+                <p class="qris-amount" id="qrisTotalAmount">Rp 0</p>
+            </div>
+            <p class="instructions">Scan QR Code di atas menggunakan e-Wallet atau M-Banking favoritmu.</p>
+            <button class="confirm-pay-btn" onclick="confirmPayment('QRIS')">Saya Sudah Bayar via QRIS</button>
+        </div>
+
+        <!-- Tampilan Konten PayLater -->
+        <div id="paylaterContent" class="payment-method-content" style="display: none;">
+            <div class="paylater-box">
+                <p class="paylater-title">Total Tagihan Hari Ini:</p>
+                <h3 class="paylater-amount" id="paylaterTotalAmount">Rp 0</h3>
+                <p class="paylater-info">Bayar dalam 30 hari tanpa bunga tambahan (Bunga 0%) ✨</p>
+                
+                <div class="paylater-form">
+                    <label for="phoneNumber">Masukkan Nomor HP (Terhubung ke PayLater):</label>
+                    <input type="tel" id="phoneNumber" placeholder="Contoh: 081234567890">
+                </div>
+            </div>
+            <p class="instructions">Sistem akan mengirimkan konfirmasi transaksi ke aplikasi PayLater kamu.</p>
+            <button class="confirm-pay-btn paylater-btn" onclick="confirmPayment('PayLater')">Proses dengan PayLater</button>
+        </div>
+
+    </div>
+</div>
