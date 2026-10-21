@@ -223,6 +223,6 @@ function kirimWhatsApp() {
     pesanText += `\n*Total Pembayaran: Rp ${totalHarga.toLocaleString("id-ID")}*`;
     pesanText += `\n\nMohon dikonfirmasi ya kak, terima kasih! 🙏`;
 
-    let nomorWA = "6281234567890"; // Ganti dengan nomor WhatsApp kamu
+    let nomorWA = "6285646462394"; // Ganti dengan nomor WhatsApp kamu
     window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanText)}`, "_blank");
 }
