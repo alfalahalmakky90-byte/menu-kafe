@@ -1,72 +1,180 @@
 /* ============================================================
-   MuisMwon Digital Menu - Interactive Script
+   DATA MENU MUISMWON (Menu Nusantara Autentik)
+   ============================================================ */
+const daftarMenu = [
+    // ---------------- MAKANAN UTAMA ----------------
+    {
+        id: 1,
+        nama: "Soto Josjis",
+        kategori: "makanan",
+        deskripsi: "Soto khas MuisMwon dengan kuah gurih segar, irisan daging empuk & krikil renyah.",
+        harga: 18000,
+        gambar: "https://images.unsplash.com/photo-1572656631137-7935297eff55?w=400"
+    },
+    {
+        id: 2,
+        nama: "Rawon Seto",
+        kategori: "makanan",
+        deskripsi: "Rawon kuah hitam pekat kaya rempah kluwek dengan daging sapi super lembut.",
+        harga: 22000,
+        gambar: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=400"
+    },
+    {
+        id: 3,
+        nama: "Bakso Lowo",
+        kategori: "makanan",
+        deskripsi: "Bakso urat jumbo gurih disajikan dengan tahu, tetelan nikmat & kuah kaldu sapi pekat.",
+        harga: 16000,
+        gambar: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400"
+    },
+    {
+        id: 4,
+        nama: "Mie Ayam Jowo",
+        kategori: "makanan",
+        deskripsi: "Mie kenyal manis gurih bumbu Jawa autentik dengan topping ayam cincang melimpah.",
+        harga: 15000,
+        gambar: "https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400"
+    },
+    {
+        id: 5,
+        nama: "Nasi Goreng Khas Malang",
+        kategori: "makanan",
+        deskripsi: "Nasi goreng merah merona khas Malang dengan suwiran ayam, kekian, dan aroma smokey.",
+        harga: 20000,
+        gambar: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400"
+    },
+    {
+        id: 6,
+        nama: "Sate Mbek Madura",
+        kategori: "makanan",
+        deskripsi: "Sate empuk dengan bumbu kacang kental gurih khas Madura, lengkap dengan irisan bawang merah & cabai rawit.",
+        harga: 28000,
+        gambar: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400"
+    },
+
+    // ---------------- MINUMAN NUSANTARA ----------------
+    {
+        id: 7,
+        nama: "Es Dawet Ayu",
+        kategori: "minuman",
+        deskripsi: "Minuman tradisional segar berisi cendol hijau, santan gurih, dan manisnya gula aren asli.",
+        harga: 10000,
+        gambar: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=400"
+    },
+    {
+        id: 8,
+        nama: "Es Timun Suri",
+        kategori: "minuman",
+        deskripsi: "Es buah timun suri segar dengan sirup manis dan es serut yang melegakan tenggorokan.",
+        harga: 9000,
+        gambar: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400"
+    },
+    {
+        id: 9,
+        nama: "Wedang Jahe Susu",
+        kategori: "minuman",
+        deskripsi: "Minuman hangat perasan jahe emprit asli berpadu susu kental manis yang menyehatkan.",
+        harga: 12000,
+        gambar: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400"
+    },
+    {
+        id: 10,
+        nama: "Es Teh Poci Wangi",
+        kategori: "minuman",
+        deskripsi: "Teh melati seduh khas poci tanah liat dengan aroma wangi melati yang khas.",
+        harga: 6000,
+        gambar: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400"
+    }
+];
+
+/* ============================================================
+   LOGIKA SISTEM KERANJANG & APLIKASI
    ============================================================ */
 
-// Array untuk menyimpan item yang dipesan
 let pesanan = [];
 let totalHarga = 0;
 
-/**
- * 1. Menambahkan menu ke dalam keranjang belanja
- */
-function tambahPesanan(namaMenu, harga) {
-    // Cek apakah item sudah ada di keranjang
-    let existingItem = pesanan.find(item => item.nama === namaMenu);
+document.addEventListener("DOMContentLoaded", () => {
+    tampilkanMenu('all');
+});
 
-    if (existingItem) {
-        existingItem.jumlah += 1;
+function tampilkanMenu(kategori) {
+    const menuContainer = document.getElementById("menu-container");
+    menuContainer.innerHTML = "";
+
+    const menuFiltered = (kategori === 'all') 
+        ? daftarMenu 
+        : daftarMenu.filter(item => item.kategori === kategori);
+
+    if (menuFiltered.length === 0) {
+        menuContainer.innerHTML = `<p class="empty-msg">Tidak ada menu untuk kategori ini.</p>`;
+        return;
+    }
+
+    menuFiltered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "menu-card";
+        card.innerHTML = `
+            <div class="img-wrapper">
+                <img src="${item.gambar}" alt="${item.nama}">
+            </div>
+            <div class="menu-info">
+                <h3>${item.nama}</h3>
+                <p class="desc">${item.deskripsi}</p>
+                <div class="card-footer">
+                    <span class="price">Rp ${item.harga.toLocaleString("id-ID")}</span>
+                    <button class="btn-add" onclick="tambahPesanan('${item.nama}', ${item.harga})">+ Tambah</button>
+                </div>
+            </div>
+        `;
+        menuContainer.appendChild(card);
+    });
+}
+
+function filterMenu(kategori) {
+    document.querySelectorAll(".cat-btn").forEach(btn => btn.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+    tampilkanMenu(kategori);
+}
+
+function tambahPesanan(namaMenu, harga) {
+    let itemAda = pesanan.find(item => item.nama === namaMenu);
+
+    if (itemAda) {
+        itemAda.jumlah += 1;
     } else {
-        pesanan.push({
-            nama: namaMenu,
-            harga: harga,
-            jumlah: 1
-        });
+        pesanan.push({ nama: namaMenu, harga: harga, jumlah: 1 });
     }
 
     hitungTotal();
     updateCartUI();
 }
 
-/**
- * 2. Mengubah jumlah item (Tambah/Kurang) dari dalam Modal
- */
 function ubahJumlah(index, delta) {
     pesanan[index].jumlah += delta;
-
-    // Jika jumlah menjadi 0 atau kurang, hapus item dari daftar
     if (pesanan[index].jumlah <= 0) {
         pesanan.splice(index, 1);
     }
-
     hitungTotal();
     updateCartUI();
 }
 
-/**
- * 3. Menghitung ulang total harga keseluruhan
- */
 function hitungTotal() {
-    totalHarga = pesanan.reduce((total, item) => total + (item.harga * item.jumlah), 0);
+    totalHarga = pesanan.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
 }
 
-/**
- * 4. Memperbarui Tampilan UI Keranjang & Modal Popup
- */
 function updateCartUI() {
-    let cartCount = document.getElementById("cart-count");
-    let cartTotal = document.getElementById("cart-total");
-    let modalTotal = document.getElementById("modal-total");
-    let cartItems = document.getElementById("cart-items");
+    const cartCount = document.getElementById("cart-count");
+    const cartTotal = document.getElementById("cart-total");
+    const modalTotal = document.getElementById("modal-total");
+    const cartItems = document.getElementById("cart-items");
 
-    // Hitung total item (pcs)
-    let totalItemCount = pesanan.reduce((sum, item) => sum + item.jumlah, 0);
+    const totalPcs = pesanan.reduce((sum, item) => sum + item.jumlah, 0);
 
-    // Update teks jumlah item & harga di Floating Cart & Modal
-    cartCount.innerText = `${totalItemCount} Item`;
+    cartCount.innerText = `${totalPcs} Item`;
     cartTotal.innerText = totalHarga.toLocaleString("id-ID");
     modalTotal.innerText = totalHarga.toLocaleString("id-ID");
 
-    // Update daftar item di dalam Modal
     cartItems.innerHTML = "";
 
     if (pesanan.length === 0) {
@@ -75,10 +183,9 @@ function updateCartUI() {
     }
 
     pesanan.forEach((item, index) => {
-        let li = document.createElement("li");
+        const li = document.createElement("li");
         li.className = "cart-item-row";
-        
-        let subtotal = item.harga * item.jumlah;
+        const subtotal = item.harga * item.jumlah;
 
         li.innerHTML = `
             <div class="item-detail">
@@ -97,48 +204,18 @@ function updateCartUI() {
     });
 }
 
-/**
- * 5. Buka / Tutup Modal Popup Keranjang
- */
 function toggleCartModal() {
-    let modal = document.getElementById("cart-modal");
-    modal.classList.toggle("active");
+    document.getElementById("cart-modal").classList.toggle("active");
 }
 
-/**
- * 6. Filter Kategori Menu (Tab Navigasi)
- */
-function filterMenu(kategori) {
-    // Ubah status tombol aktif
-    let buttons = document.querySelectorAll(".cat-btn");
-    buttons.forEach(btn => btn.classList.remove("active"));
-    
-    // Set tombol yang diklik jadi aktif
-    event.currentTarget.classList.add("active");
-
-    // Tampilkan / sembunyikan grup menu sesuai kategori
-    let groups = document.querySelectorAll(".menu-group");
-    groups.forEach(group => {
-        if (kategori === 'all' || group.getAttribute("data-category") === kategori) {
-            group.style.display = "block";
-        } else {
-            group.style.display = "none";
-        }
-    });
-}
-
-/**
- * 7. Mengirimkan Format Pesanan ke WhatsApp Kasir/Kafe
- */
 function kirimWhatsApp() {
     if (pesanan.length === 0) {
         alert("Keranjang pesanan kamu masih kosong!");
         return;
     }
 
-    let pesanText = "Halo *MuisMwon Coffee*, saya mau pesan:\n\n";
-    
-    pesanan.forEach((item) => {
+    let pesanText = "Halo *MuisMwon*, saya mau pesan:\n\n";
+    pesanan.forEach(item => {
         let subtotal = item.harga * item.jumlah;
         pesanText += `• ${item.nama} x${item.jumlah} = Rp ${subtotal.toLocaleString("id-ID")}\n`;
     });
@@ -146,9 +223,6 @@ function kirimWhatsApp() {
     pesanText += `\n*Total Pembayaran: Rp ${totalHarga.toLocaleString("id-ID")}*`;
     pesanText += `\n\nMohon dikonfirmasi ya kak, terima kasih! 🙏`;
 
-    // Ganti dengan nomor WhatsApp Kafe MuisMwon (Format 62...)
-    let nomorWA = "6281234567890"; 
-    let url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanText)}`;
-
-    window.open(url, "_blank");
+    let nomorWA = "6281234567890"; // Ganti dengan nomor WhatsApp kamu
+    window.open(`https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanText)}`, "_blank");
 }
