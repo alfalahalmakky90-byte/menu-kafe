@@ -1,133 +1,154 @@
-// ==========================================
-// 1. VARIABLE GLOBAL (MENYIMPAN DATA KERANJANG)
-// ==========================================
-let totalItems = 0;
-let totalPrice = 0;
+/* ============================================================
+   MuisMwon Digital Menu - Interactive Script
+   ============================================================ */
 
-// ==========================================
-// 2. FUNGSI TAMBAH PESANAN KE KERANJANG
-// ==========================================
-function addToCart(itemName, itemPrice) {
-    // Tambahkan jumlah item dan total harga
-    totalItems += 1;
-    totalPrice += itemPrice;
+// Array untuk menyimpan item yang dipesan
+let pesanan = [];
+let totalHarga = 0;
 
-    // Perbarui Tampilan di Floating Cart Bar
-    document.getElementById('cartCount').innerText = totalItems;
-    document.getElementById('cartTotal').innerText = 'Rp ' + totalPrice.toLocaleString('id-ID');
+/**
+ * 1. Menambahkan menu ke dalam keranjang belanja
+ */
+function tambahPesanan(namaMenu, harga) {
+    // Cek apakah item sudah ada di keranjang
+    let existingItem = pesanan.find(item => item.nama === namaMenu);
 
-    // Berikan umpan balik ringkas menggunakan pesan konsol / log
-    console.log(`[BERHASIL] ${itemName} ditambahkan ke keranjang.`);
-}
-
-// ==========================================
-// 3. FUNGSI FILTER MENU BERDASARKAN KATEGORI
-// ==========================================
-function filterMenu(category) {
-    const cards = document.querySelectorAll('.menu-card');
-    const buttons = document.querySelectorAll('.cat-btn');
-
-    // Ubah tampilan tombol kategori yang aktif
-    buttons.forEach(btn => btn.classList.remove('active'));
-    if (event && event.target) {
-        event.target.classList.add('active');
+    if (existingItem) {
+        existingItem.jumlah += 1;
+    } else {
+        pesanan.push({
+            nama: namaMenu,
+            harga: harga,
+            jumlah: 1
+        });
     }
 
-    // Tampilkan atau sembunyikan kartu menu sesuai kategori
-    cards.forEach(card => {
-        const cardCategory = card.getAttribute('data-category');
-        if (category === 'all' || cardCategory === category) {
-            card.style.display = 'flex';
+    hitungTotal();
+    updateCartUI();
+}
+
+/**
+ * 2. Mengubah jumlah item (Tambah/Kurang) dari dalam Modal
+ */
+function ubahJumlah(index, delta) {
+    pesanan[index].jumlah += delta;
+
+    // Jika jumlah menjadi 0 atau kurang, hapus item dari daftar
+    if (pesanan[index].jumlah <= 0) {
+        pesanan.splice(index, 1);
+    }
+
+    hitungTotal();
+    updateCartUI();
+}
+
+/**
+ * 3. Menghitung ulang total harga keseluruhan
+ */
+function hitungTotal() {
+    totalHarga = pesanan.reduce((total, item) => total + (item.harga * item.jumlah), 0);
+}
+
+/**
+ * 4. Memperbarui Tampilan UI Keranjang & Modal Popup
+ */
+function updateCartUI() {
+    let cartCount = document.getElementById("cart-count");
+    let cartTotal = document.getElementById("cart-total");
+    let modalTotal = document.getElementById("modal-total");
+    let cartItems = document.getElementById("cart-items");
+
+    // Hitung total item (pcs)
+    let totalItemCount = pesanan.reduce((sum, item) => sum + item.jumlah, 0);
+
+    // Update teks jumlah item & harga di Floating Cart & Modal
+    cartCount.innerText = `${totalItemCount} Item`;
+    cartTotal.innerText = totalHarga.toLocaleString("id-ID");
+    modalTotal.innerText = totalHarga.toLocaleString("id-ID");
+
+    // Update daftar item di dalam Modal
+    cartItems.innerHTML = "";
+
+    if (pesanan.length === 0) {
+        cartItems.innerHTML = '<li class="empty-msg">Belum ada pesanan terpilih.</li>';
+        return;
+    }
+
+    pesanan.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.className = "cart-item-row";
+        
+        let subtotal = item.harga * item.jumlah;
+
+        li.innerHTML = `
+            <div class="item-detail">
+                <span class="item-name" style="font-weight: 600; display: block;">${item.nama}</span>
+                <span class="item-subtotal" style="font-size: 12px; color: var(--accent);">
+                    Rp ${subtotal.toLocaleString("id-ID")}
+                </span>
+            </div>
+            <div class="qty-controls" style="display: flex; align-items: center; gap: 8px;">
+                <button onclick="ubahJumlah(${index}, -1)" style="background: #2a2a2a; color: white; border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold;">-</button>
+                <span style="font-size: 13px; font-weight: bold; min-width: 16px; text-align: center;">${item.jumlah}</span>
+                <button onclick="ubahJumlah(${index}, 1)" style="background: var(--accent); color: #121212; border: none; width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-weight: bold;">+</button>
+            </div>
+        `;
+        cartItems.appendChild(li);
+    });
+}
+
+/**
+ * 5. Buka / Tutup Modal Popup Keranjang
+ */
+function toggleCartModal() {
+    let modal = document.getElementById("cart-modal");
+    modal.classList.toggle("active");
+}
+
+/**
+ * 6. Filter Kategori Menu (Tab Navigasi)
+ */
+function filterMenu(kategori) {
+    // Ubah status tombol aktif
+    let buttons = document.querySelectorAll(".cat-btn");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    
+    // Set tombol yang diklik jadi aktif
+    event.currentTarget.classList.add("active");
+
+    // Tampilkan / sembunyikan grup menu sesuai kategori
+    let groups = document.querySelectorAll(".menu-group");
+    groups.forEach(group => {
+        if (kategori === 'all' || group.getAttribute("data-category") === kategori) {
+            group.style.display = "block";
         } else {
-            card.style.display = 'none';
+            group.style.display = "none";
         }
     });
 }
 
-// ==========================================
-// 4. FUNGSI BUKAMODAL CHECKOUT / PEMBAYARAN
-// ==========================================
-function checkout() {
-    // Cek jika keranjang masih kosong
-    if (totalItems === 0) {
-        alert('Keranjang kamu masih kosong! Silakan pilih menu Nusantara favoritmu terlebih dahulu.');
+/**
+ * 7. Mengirimkan Format Pesanan ke WhatsApp Kasir/Kafe
+ */
+function kirimWhatsApp() {
+    if (pesanan.length === 0) {
+        alert("Keranjang pesanan kamu masih kosong!");
         return;
     }
 
-    // Set nominal harga ke modal QRIS dan PayLater
-    const formattedPrice = 'Rp ' + totalPrice.toLocaleString('id-ID');
-    document.getElementById('qrisTotalAmount').innerText = formattedPrice;
-    document.getElementById('paylaterTotalAmount').innerText = formattedPrice;
-
-    // Buat Kode QRIS Dinamis menggunakan API Public gratis
-    const payload = `WARUNG-NUSANTARA-PAYMENT-TOTAL-${totalPrice}`;
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payload)}`;
-    document.getElementById('qrisImage').src = qrApiUrl;
-
-    // Tampilkan Modal Pembayaran
-    document.getElementById('paymentModal').classList.add('active');
-}
-
-// ==========================================
-// 5. FUNGSI PINDAH TAB (QRIS <-> PAYLATER)
-// ==========================================
-function switchPayment(method) {
-    const tabs = document.querySelectorAll('.tab-btn');
-    const qrisContent = document.getElementById('qrisContent');
-    const paylaterContent = document.getElementById('paylaterContent');
-
-    tabs.forEach(tab => tab.classList.remove('active'));
-
-    if (method === 'qris') {
-        tabs[0].classList.add('active');
-        qrisContent.style.display = 'block';
-        paylaterContent.style.display = 'none';
-    } else if (method === 'paylater') {
-        tabs[1].classList.add('active');
-        qrisContent.style.display = 'none';
-        paylaterContent.style.display = 'block';
-    }
-}
-
-// ==========================================
-// 6. FUNGSI TUTUP MODAL PEMBAYARAN
-// ==========================================
-function closePaymentModal() {
-    document.getElementById('paymentModal').classList.remove('active');
-}
-
-// ==========================================
-// 7. FUNGSI KONFIRMASI PEMBAYARAN & RESET
-// ==========================================
-function confirmPayment(type) {
-    const formattedPrice = 'Rp ' + totalPrice.toLocaleString('id-ID');
-
-    // Validasi Khusus Metode PayLater
-    if (type === 'PayLater') {
-        const phone = document.getElementById('phoneNumber').value.trim();
-        
-        if (!phone || phone.length < 10) {
-            alert('Silakan masukkan nomor HP PayLater yang valid (minimal 10 digit)!');
-            return;
-        }
-
-        alert(`[TRANSAKSI PAYLATER BERHASIL]\n\nTagihan sebesar ${formattedPrice} telah dikirim ke nomor HP (${phone}).\nSajikan pesanan ke meja pelanggan! 🍲`);
-    } else {
-        // Pembayaran QRIS
-        alert(`[PEMBAYARAN QRIS BERHASIL]\n\nPembayaran sebesar ${formattedPrice} telah diverifikasi.\nPesanan sedang diproses di dapur ✨`);
-    }
-
-    // Reset Keranjang & Form Input
-    totalItems = 0;
-    totalPrice = 0;
-    document.getElementById('cartCount').innerText = '0';
-    document.getElementById('cartTotal').innerText = 'Rp 0';
+    let pesanText = "Halo *MuisMwon Coffee*, saya mau pesan:\n\n";
     
-    const phoneInput = document.getElementById('phoneNumber');
-    if (phoneInput) {
-        phoneInput.value = '';
-    }
+    pesanan.forEach((item) => {
+        let subtotal = item.harga * item.jumlah;
+        pesanText += `• ${item.nama} x${item.jumlah} = Rp ${subtotal.toLocaleString("id-ID")}\n`;
+    });
 
-    // Tutup Modal
-    closePaymentModal();
+    pesanText += `\n*Total Pembayaran: Rp ${totalHarga.toLocaleString("id-ID")}*`;
+    pesanText += `\n\nMohon dikonfirmasi ya kak, terima kasih! 🙏`;
+
+    // Ganti dengan nomor WhatsApp Kafe MuisMwon (Format 62...)
+    let nomorWA = "6281234567890"; 
+    let url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesanText)}`;
+
+    window.open(url, "_blank");
 }
