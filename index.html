@@ -3,162 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MenuGo - Warung & Resto Muismwon</title>
-    
-    <!-- CSS Utama -->
+    <title>MuisMwon - Digital Menu</title>
     <link rel="stylesheet" href="style.css">
-
-    <!-- PWA Manifest & Service Worker untuk Akses Offline -->
-    <link rel="manifest" href="manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(() => console.log('Service Worker Berhasil Didaftarkan!'))
-                    .catch((err) => console.log('Gagal mendaftarkan Service Worker:', err));
-            });
-        }
-    </script>
 </head>
 <body>
 
-    <!-- Header / Banner Resto -->
+    <!-- Header / Banner Kafe -->
     <header>
-        <h1>Warung Makan Muismwon</h1>
-        <p>Cita Rasa Asli Indonesia ✨ Silakan pilih menu favoritmu!</p>
+        <h1>☕ MuisMwon</h1>
+        <p>Pilih menu favoritmu & pesan langsung dari meja!</p>
     </header>
 
-    <!-- Kategori Menu -->
-    <div class="category-container">
-        <button class="cat-btn active" onclick="filterMenu('all')">Semua</button>
-        <button class="cat-btn" onclick="filterMenu('kuah')">Makanan Kuah</button>
-        <button class="cat-btn" onclick="filterMenu('mie')">Mie</button>
-        <button class="cat-btn" onclick="filterMenu('bakar')">Sate & Bakar</button>
-    </div>
-
-    <!-- Daftar Menu -->
-    <main class="menu-grid" id="menuGrid">
-        
-        <!-- 1. Bakso -->
-        <div class="menu-card" data-category="kuah">
-            <img src="https://images.unsplash.com/photo-1628191081698-44f5fb248231?auto=format&fit=crop&w=600&q=80" alt="Bakso Sapi">
-            <div class="menu-info">
-                <h3>Bakso Sapi Spesial</h3>
-                <p class="desc">Bakso daging sapi asli dengan kuah kaldu gurih, tahu, dan bihun.</p>
-                <p class="price">Rp 18.000</p>
-                <button onclick="addToCart('Bakso Sapi Spesial', 18000)">Tambah ke Pesanan</button>
+    <main>
+        <!-- SECTION 1: MAKANAN UTAMA (6 Menu) -->
+        <h2 class="section-title">🍽️ Makanan Utama</h2>
+        <section class="menu-container">
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300" alt="Burger">
+                <div class="menu-info">
+                    <h3>Crispy Chicken Burger</h3>
+                    <p class="desc">Burger ayam crispy dengan saus keju spesial & kentang.</p>
+                    <p class="price">Rp 25.000</p>
+                    <button onclick="tambahPesanan('Crispy Chicken Burger', 25000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 2. Mie Ayam -->
-        <div class="menu-card" data-category="mie">
-            <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80" alt="Mie Ayam">
-            <div class="menu-info">
-                <h3>Mie Ayam Bakso</h3>
-                <p class="desc">Mie kenyal dengan toping ayam semur manis gurih dan tambahan bakso.</p>
-                <p class="price">Rp 15.000</p>
-                <button onclick="addToCart('Mie Ayam Bakso', 15000)">Tambah ke Pesanan</button>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300" alt="Nasi Goreng">
+                <div class="menu-info">
+                    <h3>Nasi Goreng Spesial MuisMwon</h3>
+                    <p class="desc">Nasi goreng rempah khas MuisMwon, telur ceplok, bakso & kerupuk.</p>
+                    <p class="price">Rp 22.000</p>
+                    <button onclick="tambahPesanan('Nasi Goreng Spesial MuisMwon', 22000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 3. Soto Ayam -->
-        <div class="menu-card" data-category="kuah">
-            <img src="https://images.unsplash.com/photo-1572656631137-7935297eff55?auto=format&fit=crop&w=600&q=80" alt="Soto Ayam">
-            <div class="menu-info">
-                <h3>Soto Ayam Lamongan</h3>
-                <p class="desc">Soto ayam kuah kuning segar dengan koya renyah dan telur rebus.</p>
-                <p class="price">Rp 16.000</p>
-                <button onclick="addToCart('Soto Ayam Lamongan', 16000)">Tambah ke Pesanan</button>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=300" alt="Spaghetti">
+                <div class="menu-info">
+                    <h3>Spaghetti Carbonara</h3>
+                    <p class="desc">Pasta creamy dengan daging asap & parutan keju.</p>
+                    <p class="price">Rp 28.000</p>
+                    <button onclick="tambahPesanan('Spaghetti Carbonara', 28000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 4. Rawon -->
-        <div class="menu-card" data-category="kuah">
-            <img src="https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80" alt="Rawon Daging">
-            <div class="menu-info">
-                <h3>Rawon Daging Sapi</h3>
-                <p class="desc">Sup daging khas Jawa Timur berkuah kluwek hitam legendaris dan tauge pendek.</p>
-                <p class="price">Rp 25.000</p>
-                <button onclick="addToCart('Rawon Daging Sapi', 25000)">Tambah ke Pesanan</button>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300" alt="Pizza">
+                <div class="menu-info">
+                    <h3>Personal Pizza Pepperoni</h3>
+                    <p class="desc">Pizza personal dengan mozzarella & pepperoni sapi.</p>
+                    <p class="price">Rp 32.000</p>
+                    <button onclick="tambahPesanan('Personal Pizza Pepperoni', 32000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 5. Sate Ayam -->
-        <div class="menu-card" data-category="bakar">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" alt="Sate Ayam">
-            <div class="menu-info">
-                <h3>Sate Ayam Madura</h3>
-                <p class="desc">10 tusuk sate ayam bakar empuk dilumuri bumbu kacang gurih dan kecap.</p>
-                <p class="price">Rp 22.000</p>
-                <button onclick="addToCart('Sate Ayam Madura', 22000)">Tambah ke Pesanan</button>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=300" alt="Ayam Geprek">
+                <div class="menu-info">
+                    <h3>Ricebowl Ayam Geprek</h3>
+                    <p class="desc">Nasi hangat dengan ayam crispy pedas & sambal korek.</p>
+                    <p class="price">Rp 24.000</p>
+                    <button onclick="tambahPesanan('Ricebowl Ayam Geprek', 24000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 6. Gulai Kambing / Sapi -->
-        <div class="menu-card" data-category="kuah">
-            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=600&q=80" alt="Gulai Daging">
-            <div class="menu-info">
-                <h3>Gulai Sapi Kaya Rempah</h3>
-                <p class="desc">Daging sapi empuk dengan kuah santan kaya rempah gurih khas Nusantara.</p>
-                <p class="price">Rp 28.000</p>
-                <button onclick="addToCart('Gulai Sapi Kaya Rempah', 28000)">Tambah ke Pesanan</button>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300" alt="Chicken Teriyaki">
+                <div class="menu-info">
+                    <h3>Ricebowl Chicken Teriyaki</h3>
+                    <p class="desc">Daging ayam olahan saus teriyaki manis gurih & wijen.</p>
+                    <p class="price">Rp 26.000</p>
+                    <button onclick="tambahPesanan('Ricebowl Chicken Teriyaki', 26000)">+ Tambah</button>
+                </div>
             </div>
-        </div>
+        </section>
 
+        <!-- SECTION 2: CAMILAN & DESSERT (4 Menu) -->
+        <h2 class="section-title">🍟 Camilan & Dessert</h2>
+        <section class="menu-container">
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1576107232684-1279f3908594?w=300" alt="French Fries">
+                <div class="menu-info">
+                    <h3>French Fries Seasoned</h3>
+                    <p class="desc">Kentang goreng renyah dengan taburan bumbu bbq/keju.</p>
+                    <p class="price">Rp 15.000</p>
+                    <button onclick="tambahPesanan('French Fries Seasoned', 15000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=300" alt="Roti Bakar">
+                <div class="menu-info">
+                    <h3>Roti Bakar Cokelat Keju</h3>
+                    <p class="desc">Roti bakar tebal dengan isi cokelat & keju melimpah.</p>
+                    <p class="price">Rp 16.000</p>
+                    <button onclick="tambahPesanan('Roti Bakar Cokelat Keju', 16000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=300" alt="Waffle">
+                <div class="menu-info">
+                    <h3>Waffle Es Krim Vanilla</h3>
+                    <p class="desc">Waffle renyah disajikan dengan 1 scoop es krim vanilla.</p>
+                    <p class="price">Rp 18.000</p>
+                    <button onclick="tambahPesanan('Waffle Es Krim Vanilla', 18000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=300" alt="Churros">
+                <div class="menu-info">
+                    <h3>Churros Dip Chocolate</h3>
+                    <p class="desc">Churros renyah bertabur gula kayu manis & saus cokelat.</p>
+                    <p class="price">Rp 17.000</p>
+                    <button onclick="tambahPesanan('Churros Dip Chocolate', 17000)">+ Tambah</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MINUMAN KOPI (5 Menu) -->
+        <h2 class="section-title">☕ Kopi MuisMwon</h2>
+        <section class="menu-container">
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=300" alt="Kopi Susu">
+                <div class="menu-info">
+                    <h3>Kopi Susu MuisMwon</h3>
+                    <p class="desc">Espresso khas MuisMwon dengan fresh milk & gula aren asli.</p>
+                    <p class="price">Rp 18.000</p>
+                    <button onclick="tambahPesanan('Kopi Susu MuisMwon', 18000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=300" alt="Americano">
+                <div class="menu-info">
+                    <h3>Iced Americano</h3>
+                    <p class="desc">Double shot espresso segar dengan air dingin & es.</p>
+                    <p class="price">Rp 15.000</p>
+                    <button onclick="tambahPesanan('Iced Americano', 15000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300" alt="Caramel Latte">
+                <div class="menu-info">
+                    <h3>Caramel Macchiato</h3>
+                    <p class="desc">Espresso, fresh milk, dan sirup karamel gurih manis.</p>
+                    <p class="price">Rp 22.000</p>
+                    <button onclick="tambahPesanan('Caramel Macchiato', 22000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1585494156145-1c60a4fe952b?w=300" alt="Avocado Coffee">
+                <div class="menu-info">
+                    <h3>Avocado Coffee</h3>
+                    <p class="desc">Perpaduan jus alpukat kental, espresso & es krim cokelat.</p>
+                    <p class="price">Rp 24.000</p>
+                    <button onclick="tambahPesanan('Avocado Coffee', 24000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300" alt="Cappuccino">
+                <div class="menu-info">
+                    <h3>Hot Cappuccino</h3>
+                    <p class="desc">Espresso hangat dengan foam susu tebal & bubuk cokelat.</p>
+                    <p class="price">Rp 20.000</p>
+                    <button onclick="tambahPesanan('Hot Cappuccino', 20000)">+ Tambah</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: MINUMAN NON-KOPI (5 Menu) -->
+        <h2 class="section-title">🥤 Non-Kopi & Segar</h2>
+        <section class="menu-container">
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1556881286-fc6915169721?w=300" alt="Matcha">
+                <div class="menu-info">
+                    <h3>Iced Matcha Latte</h3>
+                    <p class="desc">Matcha jepang asli dipadukan susu segar yang creamy.</p>
+                    <p class="price">Rp 20.000</p>
+                    <button onclick="tambahPesanan('Iced Matcha Latte', 20000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=300" alt="Chocolate">
+                <div class="menu-info">
+                    <h3>Signature Chocolate</h3>
+                    <p class="desc">Cokelat pekat pilihan disajikan dingin atau hangat.</p>
+                    <p class="price">Rp 19.000</p>
+                    <button onclick="tambahPesanan('Signature Chocolate', 19000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300" alt="Lemon Tea">
+                <div class="menu-info">
+                    <h3>Iced Lemon Tea</h3>
+                    <p class="desc">Teh hitam segar dipadukan dengan perasan jeruk lemon asli.</p>
+                    <p class="price">Rp 12.000</p>
+                    <button onclick="tambahPesanan('Iced Lemon Tea', 12000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=300" alt="Mango Mojito">
+                <div class="menu-info">
+                    <h3>Mango Sparkling Mojito</h3>
+                    <p class="desc">Minuman soda segar bersirup mangga & daun mint.</p>
+                    <p class="price">Rp 18.000</p>
+                    <button onclick="tambahPesanan('Mango Sparkling Mojito', 18000)">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?w=300" alt="Taro Latte">
+                <div class="menu-info">
+                    <h3>Iced Taro Latte</h3>
+                    <p class="desc">Susu manis dengan rasa talas (taro) yang gurih dan legit.</p>
+                    <p class="price">Rp 19.000</p>
+                    <button onclick="tambahPesanan('Iced Taro Latte', 19000)">+ Tambah</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ringkasan Pesanan (Cart Sticky) -->
+        <aside class="cart-section">
+            <h2>🛒 Pesanan Anda</h2>
+            <ul id="cart-items">
+                <li>Belum ada pesanan.</li>
+            </ul>
+            <hr class="divider">
+            <p class="total-text">Total: <span>Rp <strong id="cart-total">0</strong></span></p>
+            <button class="checkout-btn" onclick="kirimWhatsApp()">Pesan via WhatsApp</button>
+        </aside>
     </main>
 
-    <!-- Floating Cart Bar (Melayang di bawah) -->
-    <div class="cart-bar" id="cartBar">
-        <div>
-            <span id="cartCount">0</span> item | Total: <strong id="cartTotal">Rp 0</strong>
-        </div>
-        <button onclick="checkout()">Pesan & Bayar</button>
-    </div>
-
-    <!-- Modal Pembayaran (QRIS & PayLater) -->
-    <div class="modal-overlay" id="paymentModal">
-        <div class="modal-card">
-            <button class="close-btn" onclick="closePaymentModal()">&times;</button>
-            <h2>Metode Pembayaran</h2>
-            <p class="modal-subtitle">Pilih cara pembayaran yang kamu inginkan</p>
-
-            <!-- Pilihan Tab Metode Pembayaran -->
-            <div class="payment-tabs">
-                <button class="tab-btn active" onclick="switchPayment('qris')">QRIS</button>
-                <button class="tab-btn" onclick="switchPayment('paylater')">PayLater</button>
-            </div>
-
-            <!-- Konten Metode QRIS -->
-            <div id="qrisContent" class="payment-method-content">
-                <div class="qris-box">
-                    <img id="qrisImage" src="" alt="Kode QRIS">
-                    <p class="qris-merchant"><strong>Warung Makan Nusantara</strong></p>
-                    <p class="qris-amount" id="qrisTotalAmount">Rp 0</p>
-                </div>
-                <p class="instructions">Scan QR Code di atas menggunakan e-Wallet atau M-Banking favoritmu.</p>
-                <button class="confirm-pay-btn" onclick="confirmPayment('QRIS')">Saya Sudah Bayar via QRIS</button>
-            </div>
-
-            <!-- Konten Metode PayLater -->
-            <div id="paylaterContent" class="payment-method-content" style="display: none;">
-                <div class="paylater-box">
-                    <p class="paylater-title">Total Tagihan Hari Ini:</p>
-                    <h3 class="paylater-amount" id="paylaterTotalAmount">Rp 0</h3>
-                    <p class="paylater-info">Bayar dalam 30 hari tanpa bunga tambahan (Bunga 0%) ✨</p>
-                    
-                    <div class="paylater-form">
-                        <label for="phoneNumber">Masukkan Nomor HP (Terhubung ke PayLater):</label>
-                        <input type="tel" id="phoneNumber" placeholder="Contoh: 081234567890">
-                    </div>
-                </div>
-                <p class="instructions">Sistem akan mengirimkan konfirmasi transaksi ke aplikasi PayLater kamu.</p>
-                <button class="confirm-pay-btn paylater-btn" onclick="confirmPayment('PayLater')">Proses dengan PayLater</button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- JavaScript Utama -->
     <script src="script.js"></script>
 </body>
 </html>
